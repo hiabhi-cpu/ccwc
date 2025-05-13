@@ -8,6 +8,7 @@ import (
 	"slices"
 	"strings"
 	"unicode"
+	"unicode/utf8"
 )
 
 func main() {
@@ -32,7 +33,8 @@ func main() {
 	cmdList["-l"] = lineCommand
 	cmdList["-w"] = wordCommand
 	cmdList["-c"] = charCommand
-	cmds := []string{"-l", "-w", "-c"}
+	cmdList["-m"] = mCommand
+	cmds := []string{"-l", "-w", "-c", "-m"}
 	argsCmd := os.Args[1 : len(os.Args)-1]
 	if len(argsCmd) == 0 {
 		for _, c := range cmdList {
@@ -96,4 +98,9 @@ func wordCommand(fileName string) {
 	}
 
 	fmt.Print(cnt, "\t")
+}
+
+func mCommand(fileName string) {
+	data := getDataInBytes(fileName)
+	fmt.Print(utf8.RuneCount(data), "\t")
 }
