@@ -30,7 +30,7 @@ func main() {
 		noCommands(data, cmds, cmdList)
 		fmt.Println()
 	} else {
-		if strings.Contains(os.Args[1], ".") { //has file name
+		if strings.Contains(os.Args[len(os.Args)-1], ".") { //has file name
 			fileName := os.Args[len(os.Args)-1]
 			argsCmd := os.Args[1 : len(os.Args)-1]
 			if strings.Contains(os.Args[1], "-") {
@@ -65,6 +65,12 @@ func check(e error) {
 }
 
 func hasCommands(data []byte, cmds, argsCmd []string, cmdList map[string]func([]byte)) {
+	fmt.Println("has cmds")
+	for _, c := range argsCmd {
+		if !slices.Contains(cmds, c) {
+			check(errors.New("Give correct command"))
+		}
+	}
 	for _, c := range cmds {
 		if slices.Contains(argsCmd, c) {
 			f, e := cmdList[c]
@@ -73,11 +79,14 @@ func hasCommands(data []byte, cmds, argsCmd []string, cmdList map[string]func([]
 			}
 			f(data)
 		}
-	}
+	} //give a conter and check if wrong command was given then panic
 }
 
 func noCommands(data []byte, cmds []string, cmdList map[string]func([]byte)) {
-	for _, c := range cmdList {
+	for i, c := range cmdList {
+		if i == "-m" {
+			continue
+		}
 		c(data)
 	}
 }
