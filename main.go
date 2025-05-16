@@ -27,7 +27,7 @@ func main() {
 		if len(data) == 0 {
 			check(errors.New("Usage: ccw <command> [args...]"))
 		}
-		noCommands(data, cmds, cmdList)
+		noCommands(data, cmdList)
 		fmt.Println()
 	} else {
 		if strings.Contains(os.Args[len(os.Args)-1], ".") { //has file name
@@ -36,7 +36,7 @@ func main() {
 			if strings.Contains(os.Args[1], "-") {
 				hasCommands(getDataInBytes(fileName), cmds, argsCmd, cmdList)
 			} else {
-				noCommands(getDataInBytes(fileName), cmds, cmdList)
+				noCommands(getDataInBytes(fileName), cmdList)
 			}
 			fmt.Println(fileName)
 		} else { //has no file name
@@ -49,7 +49,7 @@ func main() {
 			if strings.Contains(os.Args[1], "-") {
 				hasCommands(data, cmds, argsCmd, cmdList)
 			} else {
-				noCommands(data, cmds, cmdList)
+				noCommands(data, cmdList)
 			}
 			fmt.Println()
 		}
@@ -82,7 +82,7 @@ func hasCommands(data []byte, cmds, argsCmd []string, cmdList map[string]func([]
 	} //give a conter and check if wrong command was given then panic
 }
 
-func noCommands(data []byte, cmds []string, cmdList map[string]func([]byte)) {
+func noCommands(data []byte, cmdList map[string]func([]byte)) {
 	for i, c := range cmdList {
 		if i == "-m" {
 			continue
